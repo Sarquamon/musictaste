@@ -1,11 +1,28 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import { useEffect } from "react";
 
 const musicTasteAPI = "http://localhost:9000";
 
 const Tests = () => {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [linkedSpotify, setLinkedSpotify] = useState(false);
+  const [spotifyUserData, setSpotifyUserData] = useState({});
   const [userData, setUserData] = useState({});
+
+  useEffect(() => {
+    console.log("AL INICIO");
+    if (sessionStorage.getItem("userLoggedIn")) {
+      setUserData({
+        Data: {
+          USER__NAME: sessionStorage.getItem("USER__NAME"),
+          USER__EMAIL: sessionStorage.getItem("USER__EMAIL"),
+          token: sessionStorage.getItem("token")
+        }
+      });
+      setUserLoggedIn(true);
+    }
+  }, []);
 
   const register = async e => {
     console.log("register");
@@ -47,10 +64,27 @@ const Tests = () => {
         sessionStorage.setItem("USER__NAME", resultUserData.Data.USER__NAME);
         sessionStorage.setItem("USER__EMAIL", resultUserData.Data.USER__EMAIL);
         sessionStorage.setItem("token", resultUserData.Data.token);
+        sessionStorage.setItem("userLoggedIn", true);
       })
       .catch(err => {
         // console.log(`Error! ${err}`);
         console.log(err.response);
+      });
+  };
+
+  const linkSpotify = e => {
+    console.log("Spotify");
+
+    e.preventDefault();
+
+    Axios.get(`${musicTasteAPI}/spotify/spotifyLinkGenerator`)
+      .then(result => {
+        console.log(result.data.authURL);
+        setLinkedSpotify(true);
+        setSpotifyUserData({ authURL: result.data.authURL });
+      })
+      .catch(err => {
+        console.log("Error!" + err);
       });
   };
 
@@ -63,6 +97,7 @@ const Tests = () => {
     sessionStorage.removeItem("USER__NAME");
     sessionStorage.removeItem("USER__EMAIL");
     sessionStorage.removeItem("token");
+    sessionStorage.removeItem("userLoggedIn");
   };
 
   return (
@@ -136,11 +171,16 @@ const Tests = () => {
       {userLoggedIn ? (
         <div>
           {userData.Data.USER__NAME}
-
+          <button onClick={e => linkSpotify(e)}>Link Spotify</button>
           <button onClick={e => logout(e)}>Logout</button>
         </div>
       ) : (
         <div>User not logged in</div>
+      )}
+      {linkedSpotify ? (
+        <a href={spotifyUserData.authURL}>Link de linkeo</a>
+      ) : (
+        <></>
       )}
     </div>
   );
