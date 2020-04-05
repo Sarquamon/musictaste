@@ -11,7 +11,7 @@ const Tests = () => {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
-    console.log("AL INICIO");
+    // console.log("AL INICIO");
     if (sessionStorage.getItem("userLoggedIn")) {
       setUserData({
         Data: {
@@ -20,9 +20,19 @@ const Tests = () => {
           token: sessionStorage.getItem("token")
         }
       });
+      //CHECK SECURITY!
+      if (localStorage.getItem("linkedSpotify")) {
+        setLinkedSpotify(true);
+      }
       setUserLoggedIn(true);
     }
   }, []);
+
+  if (userLoggedIn && linkedSpotify) {
+    setInterval(() => {
+      Axios.get(`${musicTasteAPI}/spotify/refreshToken`);
+    }, 3200);
+  }
 
   const register = async e => {
     console.log("register");
@@ -79,12 +89,42 @@ const Tests = () => {
 
     Axios.get(`${musicTasteAPI}/spotify/spotifyLinkGenerator`)
       .then(result => {
-        console.log(result.data.authURL);
+        // console.log(result.data.authURL);
+        localStorage.setItem("linkedSpotify", true);
         setLinkedSpotify(true);
-        setSpotifyUserData({ authURL: result.data.authURL });
+        window.location.href = result.data.authURL;
       })
       .catch(err => {
         console.log("Error!" + err);
+      });
+  };
+
+  const getSpotifyUserName = async e => {
+    console.log("Hello from get spoti username");
+    e.preventDefault();
+    Axios.get(`${musicTasteAPI}/spotify/getUserName`)
+      .then(result => {
+        console.log("Success!");
+        console.log(result.data);
+        setSpotifyUserData({ username: result.data.Details.display_name });
+      })
+      .catch(err => {
+        console.log("Error!");
+        console.log(err);
+      });
+  };
+
+  const getSpotifyRecommendedGenres = e => {
+    console.log("Hello from get spoti genres");
+
+    e.preventDefault();
+
+    Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres`)
+      .then(result => {
+        console.log(result.data.Details);
+      })
+      .catch(err => {
+        console.log(err);
       });
   };
 
@@ -177,8 +217,20 @@ const Tests = () => {
       ) : (
         <div>User not logged in</div>
       )}
-      {linkedSpotify ? (
-        <a href={spotifyUserData.authURL}>Link de linkeo</a>
+      {linkedSpotify && userLoggedIn ? (
+        <button onClick={e => getSpotifyUserName(e)}>Get user's name</button>
+      ) : (
+        <></>
+      )}
+      {linkedSpotify && userLoggedIn ? (
+        <div>hola {spotifyUserData.username}</div>
+      ) : (
+        <></>
+      )}
+      {linkedSpotify && userLoggedIn ? (
+        <button onClick={e => getSpotifyRecommendedGenres(e)}>
+          get genres
+        </button>
       ) : (
         <></>
       )}
