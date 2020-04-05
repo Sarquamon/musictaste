@@ -28,11 +28,11 @@ const Tests = () => {
     }
   }, []);
 
-  if (userLoggedIn && linkedSpotify) {
-    setInterval(() => {
-      Axios.get(`${musicTasteAPI}/spotify/refreshToken`);
-    }, 3200);
-  }
+  // if (userLoggedIn && linkedSpotify) {
+  //   setInterval(() => {
+  //     Axios.get(`${musicTasteAPI}/spotify/refreshToken`);
+  //   }, 3200);
+  // }
 
   const register = async e => {
     console.log("register");
@@ -124,6 +124,32 @@ const Tests = () => {
         console.log(result.data.Details);
       })
       .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const getSpotifyRecommendations = e => {
+    console.log("Hello from spotify recommendations");
+    Axios.get(`${musicTasteAPI}/spotify/getSpotifyRecommendations`)
+      .then(result => {
+        console.log("Success!");
+        console.log(result);
+      })
+      .catch(err => {
+        console.log("Error!");
+        console.log(err);
+      });
+  };
+
+  const getMyTopArtists = e => {
+    console.log("Hello from spotify recommendations");
+    Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists`)
+      .then(result => {
+        console.log("Success!");
+        console.log(result.data.Details);
+      })
+      .catch(err => {
+        console.log("Error!");
         console.log(err);
       });
   };
@@ -231,6 +257,18 @@ const Tests = () => {
         <button onClick={e => getSpotifyRecommendedGenres(e)}>
           get genres
         </button>
+      ) : (
+        <></>
+      )}
+      {linkedSpotify && userLoggedIn ? (
+        <button onClick={e => getSpotifyRecommendations(e)}>
+          get recommendations
+        </button>
+      ) : (
+        <></>
+      )}
+      {linkedSpotify && userLoggedIn ? (
+        <button onClick={e => getMyTopArtists(e)}>get my top artists</button>
       ) : (
         <></>
       )}
