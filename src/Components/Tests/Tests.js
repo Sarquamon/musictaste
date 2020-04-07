@@ -17,8 +17,8 @@ const Tests = () => {
         Data: {
           USER__NAME: sessionStorage.getItem("USER__NAME"),
           USER__EMAIL: sessionStorage.getItem("USER__EMAIL"),
-          token: sessionStorage.getItem("token")
-        }
+          token: sessionStorage.getItem("token"),
+        },
       });
       //CHECK SECURITY!
       if (localStorage.getItem("linkedSpotify")) {
@@ -34,7 +34,7 @@ const Tests = () => {
   //   }, 3200);
   // }
 
-  const register = async e => {
+  const register = async (e) => {
     console.log("register");
 
     e.preventDefault();
@@ -44,117 +44,119 @@ const Tests = () => {
       user__email: e.target.elements.userEmail.value,
       user__pwd: e.target.elements.registerUserPassword.value,
       user__first_name: e.target.elements.userFirstName.value,
-      user__last_name: e.target.elements.userLastName.value
+      user__last_name: e.target.elements.userLastName.value,
     };
 
     Axios.post(`${musicTasteAPI}/user/register`, registerUserData)
-      .then(result => {
+      .then((result) => {
         console.log(`Result: ${result.data}`);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(`Error! ${err.response}`);
       });
   };
 
-  const login = async e => {
+  const login = async (e) => {
     console.log("login");
 
     e.preventDefault();
     const loginUserData = {
       user__pwd: e.target.elements.loginUserPassword.value,
       user__name: e.target.elements.userNameEmail.value,
-      user__email: e.target.elements.userNameEmail.value
+      user__email: e.target.elements.userNameEmail.value,
     };
     Axios.post(`${musicTasteAPI}/user/login`, loginUserData)
-      .then(result => {
+      .then((result) => {
         const resultUserData = result.data;
         console.log(resultUserData);
         setUserData(resultUserData);
         setUserLoggedIn(true);
         sessionStorage.setItem("USER__NAME", resultUserData.Data.USER__NAME);
         sessionStorage.setItem("USER__EMAIL", resultUserData.Data.USER__EMAIL);
+        sessionStorage.setItem("userId", resultUserData.Data.USER__ID);
         sessionStorage.setItem("token", resultUserData.Data.token);
         sessionStorage.setItem("userLoggedIn", true);
       })
-      .catch(err => {
+      .catch((err) => {
         // console.log(`Error! ${err}`);
         console.log(err.response);
       });
   };
 
-  const linkSpotify = e => {
+  const linkSpotify = (e) => {
     console.log("Spotify");
 
     e.preventDefault();
 
     Axios.get(`${musicTasteAPI}/spotify/spotifyLinkGenerator`)
-      .then(result => {
+      .then((result) => {
         // console.log(result.data.authURL);
         localStorage.setItem("linkedSpotify", true);
         setLinkedSpotify(true);
         window.location.href = result.data.authURL;
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Error!" + err);
       });
   };
 
-  const getSpotifyUserName = async e => {
+  const getSpotifyUserName = async (e) => {
     console.log("Hello from get spoti username");
     e.preventDefault();
     Axios.get(`${musicTasteAPI}/spotify/getUserName`)
-      .then(result => {
+      .then((result) => {
         console.log("Success!");
         console.log(result.data);
         setSpotifyUserData({ username: result.data.Details.display_name });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Error!");
         console.log(err);
       });
   };
 
-  const getSpotifyRecommendedGenres = e => {
+  const getSpotifyRecommendedGenres = (e) => {
     console.log("Hello from get spoti genres");
 
     e.preventDefault();
 
     Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres`)
-      .then(result => {
+      .then((result) => {
         console.log(result.data.Details);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   };
 
-  const getSpotifyRecommendations = e => {
+  const getSpotifyRecommendations = (e) => {
     console.log("Hello from spotify recommendations");
     Axios.get(`${musicTasteAPI}/spotify/getSpotifyRecommendations`)
-      .then(result => {
+      .then((result) => {
         console.log("Success!");
         console.log(result);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Error!");
         console.log(err);
       });
   };
 
-  const getMyTopArtists = e => {
+  const getMyTopArtists = (e) => {
     console.log("Hello from spotify recommendations");
-    Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists`)
-      .then(result => {
+    const userId = sessionStorage.getItem("userId");
+    Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists/${userId}`)
+      .then((result) => {
         console.log("Success!");
         console.log(result.data.Details);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("Error!");
         console.log(err);
       });
   };
 
-  const logout = e => {
+  const logout = (e) => {
     // console.log("logout");
     e.preventDefault();
 
@@ -237,14 +239,14 @@ const Tests = () => {
       {userLoggedIn ? (
         <div>
           {userData.Data.USER__NAME}
-          <button onClick={e => linkSpotify(e)}>Link Spotify</button>
-          <button onClick={e => logout(e)}>Logout</button>
+          <button onClick={(e) => linkSpotify(e)}>Link Spotify</button>
+          <button onClick={(e) => logout(e)}>Logout</button>
         </div>
       ) : (
         <div>User not logged in</div>
       )}
       {linkedSpotify && userLoggedIn ? (
-        <button onClick={e => getSpotifyUserName(e)}>Get user's name</button>
+        <button onClick={(e) => getSpotifyUserName(e)}>Get user's name</button>
       ) : (
         <></>
       )}
@@ -254,21 +256,21 @@ const Tests = () => {
         <></>
       )}
       {linkedSpotify && userLoggedIn ? (
-        <button onClick={e => getSpotifyRecommendedGenres(e)}>
+        <button onClick={(e) => getSpotifyRecommendedGenres(e)}>
           get genres
         </button>
       ) : (
         <></>
       )}
       {linkedSpotify && userLoggedIn ? (
-        <button onClick={e => getSpotifyRecommendations(e)}>
+        <button onClick={(e) => getSpotifyRecommendations(e)}>
           get recommendations
         </button>
       ) : (
         <></>
       )}
       {linkedSpotify && userLoggedIn ? (
-        <button onClick={e => getMyTopArtists(e)}>get my top artists</button>
+        <button onClick={(e) => getMyTopArtists(e)}>get my top artists</button>
       ) : (
         <></>
       )}
