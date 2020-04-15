@@ -1,0 +1,18 @@
+.form-container {
+  margin-top: 30px;
+  padding: 40px;
+  border-radius: 7px;
+  font-family: "Open Sans";
+  border: 1px solid black;
+}
+
+.custom-register-btn {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 50%;
+}
+
+.form-title {
+  font-family: "Oswald";
+  margin-bottom: 20px;
+}
