@@ -5,7 +5,7 @@ const Login = (props) => {
   return (
     <div className="form-container">
       <h1 className="form-title">Iniciar Sesión</h1>
-      <form onSubmit={props.loginFunc}>
+      <form onSubmit={props.handleLogin}>
         <div className="form-row">
           <div className="form-group col-md-12">
             <label htmlFor="loginUsernameEmail">Nombre de usuario:</label>
@@ -17,6 +17,7 @@ const Login = (props) => {
               type="text"
               autoComplete="on"
               required
+              onChange={props.handleChange}
             />
           </div>
         </div>
@@ -31,6 +32,7 @@ const Login = (props) => {
               type="password"
               autoComplete="off"
               required
+              onChange={props.handleChange}
             />
           </div>
         </div>

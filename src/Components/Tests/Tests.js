@@ -9,14 +9,59 @@ import "./Tests.css";
 const musicTasteAPI = "http://localhost:9000";
 
 const Tests = () => {
+  const [registerFormData, setRegisterFormData] = useState({
+    registerUsername: null,
+    registerUseremail: null,
+    registerUserPassword: null,
+    registerUserFirstName: null,
+    registerUserLastName: null,
+    rockCheckbox: false,
+    latinoCheckBox: false,
+    punkCheckBox: false,
+    houseCheckBox: false,
+    kpopCheckBox: false,
+    reggaetonCheckBox: false,
+    metalCheckBox: false,
+    electronicCheckBox: false,
+    frenchCheckBox: false,
+    disneyCheckBox: false,
+    hiphopCheckBox: false,
+    popCheckBox: false,
+  });
+
+  const [loginFormData, setLoginFormData] = useState({
+    loginUsernameEmail: null,
+    loginUserPassword: null,
+  });
+
+  const handleRegisterFormChange = (event) => {
+    const isCheckbox = event.target.type === "checkbox";
+    setRegisterFormData({
+      ...registerFormData,
+      [event.target.name]: isCheckbox
+        ? event.target.checked
+        : event.target.value,
+    });
+  };
+
+  const handleLoginFormChange = (event) => {
+    const isCheckbox = event.target.type === "checkbox";
+    setLoginFormData({
+      ...loginFormData,
+      [event.target.name]: isCheckbox
+        ? event.target.checked
+        : event.target.value,
+    });
+  };
+
   const [formView, setformview] = useState("login");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [spotifyUserData, setSpotifyUserData] = useState({});
   const [linkedSpotify, setLinkedSpotify] = useState(false);
   const [userData, setUserData] = useState({});
 
+  //CHECK IF USER IS STILL LOGGED IN AT STARTUP
   useEffect(() => {
-    // console.log("AL INICIO");
     if (sessionStorage.getItem("userLoggedIn")) {
       setUserData({
         Data: {
@@ -25,7 +70,7 @@ const Tests = () => {
           token: sessionStorage.getItem("token"),
         },
       });
-      //CHECK SECURITY!
+      //CHECK SECURITY! --PRIORITY
       if (localStorage.getItem("linkedSpotify")) {
         setLinkedSpotify(true);
       }
@@ -33,6 +78,7 @@ const Tests = () => {
     }
   }, []);
 
+  //REFRESH TOKEN
   // if (userLoggedIn && linkedSpotify) {
   // Axios.get(`${musicTasteAPI}/spotify/getUserName`)
   //   .then((result) => {
@@ -49,19 +95,19 @@ const Tests = () => {
   //   }, 3200);
   // }
 
-  const register = async (e) => {
-    // console.log("register");
+  const handleRegister = (e) => {
     e.preventDefault();
 
-    const registerUserData = {
-      USERNAME: e.target.elements.registerUsername.value,
-      USEREMAIL: e.target.elements.registerUseremail.value,
-      USERPWD: e.target.elements.registerUserPassword.value,
-      FIRST_NAME: e.target.elements.registerUserFirstName.value,
-      LAST_NAME: e.target.elements.registerUserLastName.value,
-    };
-
-    Axios.post(`${musicTasteAPI}/user/register`, registerUserData)
+    const checkBoxes = [];
+    for (let key in registerFormData) {
+      if (registerFormData[key] === true) {
+        checkBoxes.push(key);
+      }
+    }
+    Axios.post(`${musicTasteAPI}/user/register`, {
+      ...registerFormData,
+      checkBoxes,
+    })
       .then((result) => {
         console.log("Result:\n", result.data);
       })
@@ -70,16 +116,9 @@ const Tests = () => {
       });
   };
 
-  const login = async (e) => {
-    // console.log("login");
-
+  const handleLogin = (e) => {
     e.preventDefault();
-    const loginUserData = {
-      USERPWD: e.target.elements.loginUserPassword.value,
-      USERNAME: e.target.elements.loginUsernameEmail.value,
-      USEREMAIL: e.target.elements.loginUsernameEmail.value,
-    };
-    Axios.post(`${musicTasteAPI}/user/login`, loginUserData)
+    Axios.post(`${musicTasteAPI}/user/login`, { ...loginFormData })
       .then((result) => {
         const resultUserData = result.data;
         console.log(resultUserData);
@@ -129,21 +168,22 @@ const Tests = () => {
       });
   };
 
-  const getSpotifyRecommendedGenres = (e) => {
+  const getRecommendedGenres = (e) => {
     // console.log("Hello from get spoti genres");
 
     e.preventDefault();
-
-    Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres`)
+    const userId = sessionStorage.getItem("userId");
+    Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres/${userId}`)
       .then((result) => {
         console.log("Data:\n", result.data.Details);
+        console.log("Data:\n", result.data.Tracks);
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const getSpotifyRecommendations = (e) => {
+  const getRecommendedArtists = (e) => {
     // console.log("Hello from spotify recommendations");
 
     const userId = sessionStorage.getItem("userId");
@@ -193,63 +233,76 @@ const Tests = () => {
         <div className="row justify-content-center">
           <div className="custom-container">
             {formView === "login" ? (
-              <Login loginFunc={login} setFormView={setformview} />
+              <Login
+                loginForm={loginFormData}
+                handleLogin={handleLogin}
+                handleChange={handleLoginFormChange}
+                setFormView={setformview}
+              />
             ) : (
-              <Register registerFunc={register} setFormView={setformview} />
-            )}
-            {userLoggedIn ? (
-              <div className="container">
-                <h1>Hola {userData.Data.USERNAME}</h1>
-                <div className="btn-group">
-                  <button
-                    className="btn btn-success"
-                    onClick={(e) => linkSpotify(e)}
-                  >
-                    Unir Spotify
-                  </button>
-                  <button className="btn btn-danger" onClick={(e) => logout(e)}>
-                    Cerrar Sesión
-                  </button>
-                </div>
-                {linkedSpotify === true ? (
-                  <div>
-                    <h2>hola {spotifyUserData.username}</h2>
-                    <div className="btn-group">
-                      <button
-                        className="btn btn-success"
-                        onClick={(e) => getSpotifyUserName(e)}
-                      >
-                        Get user's name
-                      </button>
-                      <button
-                        className="btn btn-success"
-                        onClick={(e) => getSpotifyRecommendedGenres(e)}
-                      >
-                        get genres
-                      </button>
-                      <button
-                        className="btn btn-success"
-                        onClick={(e) => getSpotifyRecommendations(e)}
-                      >
-                        get recommendations
-                      </button>
-                      <button
-                        className="btn btn-success"
-                        onClick={(e) => getMyTopArtists(e)}
-                      >
-                        get my top artists
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            ) : (
-              <></>
+              <Register
+                registerForm={registerFormData}
+                handleRegister={handleRegister}
+                handleChange={handleRegisterFormChange}
+                setFormView={setformview}
+              />
             )}
           </div>
         </div>
+
+        {userLoggedIn ? (
+          <div className="row">
+            <div className="container">
+              <h1>Hola {userData.Data.USERNAME}</h1>
+              <div className="btn-group">
+                <button
+                  className="btn btn-success"
+                  onClick={(e) => linkSpotify(e)}
+                >
+                  Unir Spotify
+                </button>
+                <button className="btn btn-danger" onClick={(e) => logout(e)}>
+                  Cerrar Sesión
+                </button>
+              </div>
+              {linkedSpotify === true ? (
+                <div>
+                  <h2>hola {spotifyUserData.username}</h2>
+                  <div className="btn-group">
+                    <button
+                      className="btn btn-success"
+                      onClick={(e) => getSpotifyUserName(e)}
+                    >
+                      Get user's name
+                    </button>
+                    <button
+                      className="btn btn-success"
+                      onClick={(e) => getRecommendedGenres(e)}
+                    >
+                      get recommended genres
+                    </button>
+                    <button
+                      className="btn btn-success"
+                      onClick={(e) => getRecommendedArtists(e)}
+                    >
+                      get recommended artists
+                    </button>
+                    <button
+                      className="btn btn-success"
+                      onClick={(e) => getMyTopArtists(e)}
+                    >
+                      get my top artists
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </div>
     </section>
   );
