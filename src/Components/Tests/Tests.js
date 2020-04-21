@@ -6,7 +6,8 @@ import Login from "./Login/Login";
 
 import "./Tests.css";
 
-const musicTasteAPI = "http://localhost:9000";
+const musicTasteAPI = "https://musictasteapi.azurewebsites.net/";
+// const musicTasteAPI = "http://localhost:9000";
 
 const Tests = () => {
   const [registerFormData, setRegisterFormData] = useState({
@@ -158,14 +159,16 @@ const Tests = () => {
 
     e.preventDefault();
 
-    Axios.get(`${musicTasteAPI}/spotify/getUserName`)
-      .then((result) => {
-        console.log("Success!\n", result.data);
-        setSpotifyUserData({ username: result.data.Details.display_name });
-      })
-      .catch((err) => {
-        console.log("Error!\n", err);
-      });
+    Axios.get(`${musicTasteAPI}/spotify/random`);
+
+    // Axios.get(`${musicTasteAPI}/spotify/getUserName`)
+    //   .then((result) => {
+    //     console.log("Success!\n", result.data);
+    //     setSpotifyUserData({ username: result.data.Details.display_name });
+    //   })
+    //   .catch((err) => {
+    //     console.log("Error!\n", err);
+    //   });
   };
 
   const getRecommendedGenres = (e) => {
