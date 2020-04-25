@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Axios from "axios";
-import { useEffect } from "react";
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 
@@ -10,6 +10,7 @@ const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
 // const musicTasteAPI = "http://localhost:9000";
 
 const Tests = () => {
+  const history = useHistory();
   const [registerFormData, setRegisterFormData] = useState({
     registerUsername: null,
     registerUseremail: null,
@@ -105,16 +106,22 @@ const Tests = () => {
         checkBoxes.push(key);
       }
     }
-    Axios.post(`${musicTasteAPI}/user/register`, {
-      ...registerFormData,
-      checkBoxes,
-    })
-      .then((result) => {
-        console.log("Result:\n", result.data);
+    if (checkBoxes.length > 0) {
+      Axios.post(`${musicTasteAPI}/user/register`, {
+        ...registerFormData,
+        checkBoxes,
       })
-      .catch((err) => {
-        console.log("Error!\n", err.response);
-      });
+        .then((result) => {
+          console.log("Result:\n", result.data);
+          history.push("/");
+        })
+        .catch((err) => {
+          console.log("Error!\n", err.response);
+        });
+    } else {
+      //Improve visuals
+      alert("Debes seleccionar al menos un genero!");
+    }
   };
 
   const handleLogin = (e) => {
@@ -137,14 +144,10 @@ const Tests = () => {
   };
 
   const linkSpotify = (e) => {
-    // console.log("Spotify");
-
     e.preventDefault();
 
     Axios.get(`${musicTasteAPI}/spotify/spotifyLinkGenerator`)
       .then((result) => {
-        // console.log(result.data.authURL);
-
         localStorage.setItem("linkedSpotify", true);
         setLinkedSpotify(true);
         window.location.href = result.data.authURL;
@@ -155,11 +158,7 @@ const Tests = () => {
   };
 
   const getSpotifyUserName = async (e) => {
-    // console.log("Hello from get spoti username");
-
     e.preventDefault();
-
-    // Axios.get(`${musicTasteAPI}/spotify/random`);
 
     Axios.get(`${musicTasteAPI}/spotify/getUserName`)
       .then((result) => {
@@ -172,8 +171,6 @@ const Tests = () => {
   };
 
   const getRecommendedGenres = (e) => {
-    // console.log("Hello from get spoti genres");
-
     e.preventDefault();
     const userId = sessionStorage.getItem("userId");
     Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres/${userId}`)
@@ -187,8 +184,6 @@ const Tests = () => {
   };
 
   const getRecommendedArtists = (e) => {
-    // console.log("Hello from spotify recommendations");
-
     const userId = sessionStorage.getItem("userId");
 
     Axios.get(`${musicTasteAPI}/spotify/getSpotifyRecommendations/${userId}`)
@@ -202,8 +197,6 @@ const Tests = () => {
   };
 
   const getMyTopArtists = (e) => {
-    // console.log("Hello from spotify recommendations");
-
     const userId = sessionStorage.getItem("userId");
 
     Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists/${userId}`)
@@ -216,7 +209,6 @@ const Tests = () => {
   };
 
   const logout = (e) => {
-    // console.log("logout");
     e.preventDefault();
 
     setUserData({});

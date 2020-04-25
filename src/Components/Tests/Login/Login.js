@@ -43,7 +43,7 @@ const Login = (props) => {
         </div>
         <small className="">
           ¿Olvidaste la contraseña?
-          <Link to="#"> Click aquí </Link>
+          <Link to="/forgotPassword"> Click aquí </Link>
           para recuperarla. Ó{" "}
           <Link
             to="#"

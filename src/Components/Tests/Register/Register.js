@@ -78,8 +78,8 @@ const Register = (props) => {
         <div className="d-flex justify-content-center">
           <h3 className="form-subtitle">Select your favourite genres!</h3>
         </div>
-        <div className="form-row">
-          <div className="form-group">
+        <div className="form-group">
+          <div className="form-row">
             <div className="form-check form-check-inline">
               <input
                 type="checkbox"
@@ -134,9 +134,7 @@ const Register = (props) => {
               </label>
             </div>
           </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
+          <div className="form-row">
             <div className="form-check form-check-inline">
               <input
                 type="checkbox"
@@ -190,10 +188,7 @@ const Register = (props) => {
               </label>
             </div>
           </div>
-        </div>
-
-        <div className="form-row">
-          <div className="form-group">
+          <div className="form-row">
             <div className="form-check form-check-inline">
               <input
                 type="checkbox"
@@ -246,7 +241,7 @@ const Register = (props) => {
                 Pop
               </label>
             </div>
-          </div>
+          </div>{" "}
         </div>
         <div className="d-flex justify-content-center">
           <button className="btn btn-primary custom-register-btn" type="submit">
@@ -255,7 +250,7 @@ const Register = (props) => {
         </div>
         <small className="">
           ¿Olvidaste la contraseña?
-          <Link to="#"> Click aquí </Link>
+          <Link to="/forgotPassword"> Click aquí </Link>
           para recuperarla. Ó{" "}
           <Link
             to="#"
