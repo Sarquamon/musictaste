@@ -6,8 +6,8 @@ import SuccessForgot from "./SuccessForgot";
 
 import "../Tests.css";
 
-// const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-const musicTasteAPI = "http://localhost:9000";
+const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
+// const musicTasteAPI = "http://localhost:9000";
 
 const ForgotPassword = () => {
   const [userNameEmail, setUserNameEmail] = useState({

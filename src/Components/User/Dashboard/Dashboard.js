@@ -1,20 +1,37 @@
 import React, { useEffect, useState } from "react";
-import TracksCards from "./TracksCards/TracksCards";
 import Axios from "axios";
 
 import Buttons from "./Buttons/Buttons";
+import TracksCards from "./TracksCards/TracksCards";
+import AlbumsCards from "./AlbumsCards/AlbumsCards";
+import ArtistCards from "./ArtistsCards/ArtistsCards";
+import TopArtistCards from "./TopArtistsCards/TopArtistsCards";
 
 const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
 // const musicTasteAPI = "http://localhost:9000";
 
 const Dashboard = (props) => {
   const [recommendations, setRecommendations] = useState({});
+  const [view, setView] = useState("main");
 
   const getRecommendedSongs = () => {
     const userId = sessionStorage.getItem("userId");
     Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres/${userId}`)
       .then((result) => {
         setRecommendations({ ...recommendations, tracks: result.data.Tracks });
+        setView("tracks");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getRecommendedAlbums = () => {
+    const userId = sessionStorage.getItem("userId");
+    Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres/${userId}`)
+      .then((result) => {
+        setRecommendations({ ...recommendations, albums: result.data.Tracks });
+        setView("albums");
       })
       .catch((err) => {
         console.log(err);
@@ -26,8 +43,8 @@ const Dashboard = (props) => {
 
     Axios.get(`${musicTasteAPI}/spotify/getSpotifyRecommendations/${userId}`)
       .then((result) => {
-        console.log("Success!\n");
-        console.log(result.data.Tracks[0]);
+        setRecommendations({ ...recommendations, artists: result.data.Tracks });
+        setView("artists");
       })
       .catch((err) => {
         console.log("Error!\n", err);
@@ -40,6 +57,11 @@ const Dashboard = (props) => {
     Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists/${userId}`)
       .then((result) => {
         console.log("Success!\n", result.data.Details);
+        setRecommendations({
+          ...recommendations,
+          topArtists: result.data.Details,
+        });
+        setView("topartists");
       })
       .catch((err) => {
         console.log("Error!\n", err);
@@ -88,15 +110,59 @@ const Dashboard = (props) => {
                   getMyTopArtists={getMyTopArtists}
                   getRecommendedArtists={getRecommendedArtists}
                   getRecommendedSongs={getRecommendedSongs}
+                  getRecommendedAlbums={getRecommendedAlbums}
                 />
               </div>
             </div>
-            {recommendations.tracks ? (
-              <div className="row">
-                <TracksCards tracks={recommendations.tracks} />
-              </div>
-            ) : (
-              <></>
+
+            {/* Tracks */}
+            {view === "tracks" && (
+              <>
+                {recommendations.tracks ? (
+                  <div className="row">
+                    <TracksCards tracks={recommendations.tracks} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+
+            {/* Albums */}
+            {view === "albums" && (
+              <>
+                {recommendations.albums ? (
+                  <div className="row">
+                    <AlbumsCards albums={recommendations.albums} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+
+            {/* Artists */}
+            {view === "artists" && (
+              <>
+                {recommendations.artists ? (
+                  <div className="row">
+                    <ArtistCards artists={recommendations.artists} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
+            )}
+            {view === "topartists" && (
+              <>
+                {recommendations.topArtists ? (
+                  <div className="row">
+                    <TopArtistCards topArtists={recommendations.topArtists} />
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </>
             )}
           </div>
         ) : (

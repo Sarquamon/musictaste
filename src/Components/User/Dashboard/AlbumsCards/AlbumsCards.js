@@ -1,11 +1,11 @@
 import React from "react";
 
-import "./TracksCards.css";
+import "./AlbumsCards.css";
 
 const Cards = (props) => {
   return (
     <>
-      {props.tracks.map((track) => {
+      {props.albums.map((track) => {
         return (
           <div
             className="col-sm-3 d-flex align-items-stretch mt-4 mb-3"
@@ -21,13 +21,13 @@ const Cards = (props) => {
               />
               <div className="card-body">
                 <h5 className="card-title customTitle">
-                  <b>Title:</b> {track.name}
+                  <b>Title:</b> {track.album.name}
                 </h5>
                 <p className="card-text customTitle">
-                  <b>Artist:</b> {track.artists[0].name}
+                  <b>Artist:</b> {track.album.artists[0].name}
                 </p>
                 <button
-                  onClick={() => window.open(track.external_urls.spotify)}
+                  onClick={() => window.open(track.album.external_urls.spotify)}
                   className="btn btn-primary"
                 >
                   See on Spotify

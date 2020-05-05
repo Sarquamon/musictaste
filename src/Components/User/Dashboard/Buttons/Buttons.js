@@ -6,6 +6,9 @@ const Buttons = (props) => {
       <button className="btn btn-success" onClick={props.getRecommendedSongs}>
         Recommend me some songs!
       </button>
+      <button className="btn btn-success" onClick={props.getRecommendedAlbums}>
+        How about some albums?
+      </button>
       <button className="btn btn-success" onClick={props.getRecommendedArtists}>
         Maybe an artist
       </button>
