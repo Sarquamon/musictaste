@@ -4,8 +4,8 @@ import Axios from "axios";
 import Register from "../LoginRegister/Register/Register";
 import Login from "../LoginRegister/Login/Login";
 
-// const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-const musicTasteAPI = "http://localhost:9000";
+const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
+// const musicTasteAPI = "http://localhost:9000";
 
 const LoginRegister = (props) => {
   const [registerFormData, setRegisterFormData] = useState({

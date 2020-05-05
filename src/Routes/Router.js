@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import Home from "../Components/Home/Home";
 import LoginRegister from "../Components/LoginRegister/LoginRegister";
 import LinkSpotify from "../Components/LinkSpotify/LinkSpotify";
+import Dashboard from "../Components/User/Dashboard/Dashboard";
 import ForgotPassword from "../Components/Tests/ForgotPassword/ForgotPassword";
 import RecoverPassword from "../Components/Tests/ForgotPassword/RecoverPassword";
 import Tests from "../Components/Tests/Tests";
@@ -29,6 +30,22 @@ const Routes = (props) => (
       path="/linkSpotify"
       render={() => (
         <LinkSpotify
+          userLoggedIn={props.userLoggedIn}
+          setUserLoggedIn={props.setUserLoggedIn}
+          userData={props.userData}
+          setUserData={props.setUserData}
+          linkedSpotify={props.linkedSpotify}
+          setLinkedSpotify={props.setLinkedSpotify}
+          spotifyUserData={props.spotifyUserData}
+          setSpotifyUserData={props.setSpotifyUserData}
+        />
+      )}
+    />
+    <Route
+      exact
+      path="/user/dashboard"
+      render={() => (
+        <Dashboard
           userLoggedIn={props.userLoggedIn}
           setUserLoggedIn={props.setUserLoggedIn}
           userData={props.userData}

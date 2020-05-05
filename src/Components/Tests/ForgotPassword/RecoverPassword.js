@@ -7,8 +7,8 @@ import Recover from "./RecoverView";
 
 import "../Tests.css";
 
-// const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-const musicTasteAPI = "http://localhost:9000";
+const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
+// const musicTasteAPI = "http://localhost:9000";
 
 const RecoverPassword = () => {
   const [User, setUser] = useState({

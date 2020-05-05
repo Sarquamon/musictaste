@@ -1,64 +1,10 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import Axios from "axios";
 
-// const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-const musicTasteAPI = "http://localhost:9000";
+const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
+// const musicTasteAPI = "http://localhost:9000";
 
 const LinkSpotify = (props) => {
-  const getSpotifyUserName = async (e) => {
-    e.preventDefault();
-
-    Axios.get(`${musicTasteAPI}/spotify/getUserName`)
-      .then((result) => {
-        console.log("Success!\n", result.data);
-        props.setSpotifyUserData({
-          username: result.data.Details.display_name,
-        });
-      })
-      .catch((err) => {
-        console.log("Error!\n", err);
-      });
-  };
-
-  const getRecommendedGenres = (e) => {
-    e.preventDefault();
-    const userId = sessionStorage.getItem("userId");
-    Axios.get(`${musicTasteAPI}/spotify/getRecommendedGenres/${userId}`)
-      .then((result) => {
-        console.log("Data:\n", result.data.Details);
-        console.log("Data:\n", result.data.Tracks);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getRecommendedArtists = (e) => {
-    const userId = sessionStorage.getItem("userId");
-
-    Axios.get(`${musicTasteAPI}/spotify/getSpotifyRecommendations/${userId}`)
-      .then((result) => {
-        console.log("Success!\n");
-        console.log(result.data.Tracks[0]);
-      })
-      .catch((err) => {
-        console.log("Error!\n", err);
-      });
-  };
-
-  const getMyTopArtists = (e) => {
-    const userId = sessionStorage.getItem("userId");
-
-    Axios.get(`${musicTasteAPI}/spotify/getUsersTopArtists/${userId}`)
-      .then((result) => {
-        console.log("Success!\n", result.data.Details);
-      })
-      .catch((err) => {
-        console.log("Error!\n", err);
-      });
-  };
-
   const linkSpotify = (e) => {
     e.preventDefault();
 
@@ -76,50 +22,38 @@ const LinkSpotify = (props) => {
   return (
     <div>
       {props.userLoggedIn ? (
-        <div className="row">
-          <div className="container">
-            <h1>Hola {props.userData.Data.USERNAME}</h1>
-            <div className="btn-group">
-              <button
-                className="btn btn-success"
-                onClick={(e) => linkSpotify(e)}
-              >
-                Unir Spotify
-              </button>
+        <div className="container">
+          <div className="row">
+            <div className="container mt-3">
+              <div className="row">
+                <div className="col d-flex justify-content-center">
+                  <h1>Hola {props.userData.Data.USERNAME}</h1>
+                </div>
+              </div>
             </div>
+            <div className="container">
+              <div className="row">
+                <div className="col d-flex justify-content-center">
+                  <p>
+                    To be able to recommend you stuff you have to connect to
+                    Spotify
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="col d-flex justify-content-center"></div>
           </div>
-        </div>
-      ) : (
-        <></>
-      )}
-      {props.linkedSpotify === true ? (
-        <div>
-          <h2>hola {props.spotifyUserData.username}</h2>
-          <div className="btn-group">
-            <button
-              className="btn btn-success"
-              onClick={(e) => getSpotifyUserName(e)}
-            >
-              Get user's name
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={(e) => getRecommendedGenres(e)}
-            >
-              get recommended genres
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={(e) => getRecommendedArtists(e)}
-            >
-              get recommended artists
-            </button>
-            <button
-              className="btn btn-success"
-              onClick={(e) => getMyTopArtists(e)}
-            >
-              get my top artists
-            </button>
+          <div className="row">
+            <div className="col d-flex justify-content-center">
+              <div className="btn-group">
+                <button
+                  className="btn btn-success"
+                  onClick={(e) => linkSpotify(e)}
+                >
+                  Unir Spotify
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       ) : (
