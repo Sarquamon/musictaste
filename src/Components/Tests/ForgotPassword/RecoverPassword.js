@@ -3,12 +3,10 @@ import Axios from "axios";
 import { useHistory } from "react-router-dom";
 import ReactLoading from "react-loading";
 
+import { musicTasteAPI } from "../../../Routes/Router";
 import Recover from "./RecoverView";
 
 import "../Tests.css";
-
-const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-// const musicTasteAPI = "http://localhost:9000";
 
 const RecoverPassword = () => {
   const [User, setUser] = useState({
@@ -49,7 +47,7 @@ const RecoverPassword = () => {
     } else {
       history.push("/");
     }
-  }, [User, history]);
+  }, []);
 
   const handleChange = (event) => {
     setUser({

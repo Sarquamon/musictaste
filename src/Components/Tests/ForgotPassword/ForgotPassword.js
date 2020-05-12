@@ -3,11 +3,9 @@ import { Link } from "react-router-dom";
 import Axios from "axios";
 
 import SuccessForgot from "./SuccessForgot";
+import { musicTasteAPI } from "../../../Routes/Router";
 
 import "../Tests.css";
-
-const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-// const musicTasteAPI = "http://localhost:9000";
 
 const ForgotPassword = () => {
   const [userNameEmail, setUserNameEmail] = useState({

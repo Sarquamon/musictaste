@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+
 import Register from "../LoginRegister/Register/Register";
 import Login from "../LoginRegister/Login/Login";
-
-const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-// const musicTasteAPI = "http://localhost:9000";
+import { musicTasteAPI } from "../../Routes/Router";
 
 const LoginRegister = (props) => {
   const [registerFormData, setRegisterFormData] = useState({
