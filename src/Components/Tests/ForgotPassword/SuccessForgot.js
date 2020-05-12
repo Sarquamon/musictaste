@@ -10,7 +10,7 @@ const SuccessForgot = (props) => {
         to recover password
       </p>
       <small>
-        <Link to="/tests"> Click aquí </Link>
+        <Link to="/"> Click aquí </Link>
         para regresar.
       </small>
     </div>

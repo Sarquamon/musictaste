@@ -72,7 +72,7 @@ const ForgotPassword = () => {
                   </div>
                   <small className="">
                     ¿Recordaste la contraseña?
-                    <Link to="/tests"> Click aquí </Link>
+                    <Link to="/"> Click aquí </Link>
                     para regresar.
                   </small>
                 </form>
