@@ -1,8 +1,7 @@
 import React from "react";
 import Axios from "axios";
 
-const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-// const musicTasteAPI = "http://localhost:9000";
+import { musicTasteAPI } from "../../Routes/Router";
 
 const LinkSpotify = (props) => {
   const linkSpotify = (e) => {

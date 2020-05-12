@@ -6,7 +6,6 @@ import LinkSpotify from "../Components/LinkSpotify/LinkSpotify";
 import Dashboard from "../Components/User/Dashboard/Dashboard";
 import ForgotPassword from "../Components/Tests/ForgotPassword/ForgotPassword";
 import RecoverPassword from "../Components/Tests/ForgotPassword/RecoverPassword";
-import Tests from "../Components/Tests/Tests";
 
 const Routes = (props) => (
   <Switch>
@@ -59,8 +58,9 @@ const Routes = (props) => (
     />
     <Route exact path="/forgotPassword" component={ForgotPassword} />
     <Route exact path="/recoverpwd" component={RecoverPassword} />
-    <Route exact path="/tests" component={Tests} />
   </Switch>
 );
 
+// export const musicTasteAPI = "http://localhost:9000";
+export const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
 export default Routes;

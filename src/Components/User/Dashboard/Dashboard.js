@@ -6,9 +6,7 @@ import TracksCards from "./TracksCards/TracksCards";
 import AlbumsCards from "./AlbumsCards/AlbumsCards";
 import ArtistCards from "./ArtistsCards/ArtistsCards";
 import TopArtistCards from "./TopArtistsCards/TopArtistsCards";
-
-const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
-// const musicTasteAPI = "http://localhost:9000";
+import { musicTasteAPI } from "../../../Routes/Router";
 
 const Dashboard = (props) => {
   const [recommendations, setRecommendations] = useState({});
