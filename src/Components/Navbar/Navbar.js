@@ -5,7 +5,10 @@ import "./Navbar.css";
 
 const Navbar = (props) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light custom-navbar">
+    <nav
+      className="navbar navbar-expand-lg navbar-light custom-navbar"
+      id="mainNav"
+    >
       <div className="d-flex flex-grow-1">
         <Link className="navbar-brand d-none d-lg-inline-block" to="/">
           MusicTaste
@@ -34,21 +37,19 @@ const Navbar = (props) => {
         <ul className="navbar-nav ml-auto flex-nowrap">
           <li className="nav-item">
             <Link to="/" className="nav-link m-2 menu-item nav-active">
-              Home
+              <button className="btn btn-secondary">Home</button>
             </Link>
           </li>
           {props.userLoggedIn ? (
             <ul className="navbar-nav ml-auto flex-nowrap">
               <li className="nav-item">
                 <Link to="/linkSpotify" className="menu-item">
-                  <button className="m-2 btn btn-outline-success">
-                    Link Spotify
-                  </button>
+                  <button className="m-2 btn btn-success">Link Spotify</button>
                 </Link>
               </li>
               <li className="nav-item">
                 <button
-                  className="m-2 menu-item btn btn-outline-danger"
+                  className="m-2 menu-item btn btn-danger"
                   onClick={props.logout}
                 >
                   Log out
@@ -58,7 +59,7 @@ const Navbar = (props) => {
           ) : (
             <li className="nav-item">
               <Link to="/loginregister" className="nav-link m-2 menu-item">
-                Login / Register
+                <button className="btn btn-success">Login / Register</button>
               </Link>
             </li>
           )}

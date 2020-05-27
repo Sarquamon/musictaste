@@ -62,5 +62,5 @@ const Routes = (props) => (
 );
 
 // export const musicTasteAPI = "http://localhost:9000";
-export const musicTasteAPI = "https://musictasteapi.azurewebsites.net";
+export const musicTasteAPI = "https://musictasteapi2.azurewebsites.net";
 export default Routes;
